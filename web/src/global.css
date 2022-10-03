@@ -53,7 +53,7 @@ header .logo img {
 main {
   margin-top: 48px;
   height: calc(100vh - 150px);
-  min-height: -webkit-fill-available;
+  /* min-height: -webkit-fill-available; */
   background-color: #f7f7f7;
   overflow-y: auto;
 }
