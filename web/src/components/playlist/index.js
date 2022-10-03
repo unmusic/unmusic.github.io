@@ -51,9 +51,7 @@ const PlayList = () => {
     <div className="playlist">
       <Helmet>
         <title>
-          {data?.fields?.name
-            ? `${data?.fields?.name} | Zen Noise`
-            : "Zen Noise"}
+          {data?.fields?.name ? `${data?.fields?.name} | UnMusic` : "UnMusic"}
         </title>
         <meta name="description" content={data?.fields?.description} />
       </Helmet>

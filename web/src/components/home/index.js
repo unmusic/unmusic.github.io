@@ -25,7 +25,7 @@ const Home = () => {
   return (
     <div className="home">
       <Helmet>
-        <title>Zen Noise - Music for productivity</title>
+        <title>UnMusic - Productivity music for Developers</title>
         <meta
           name="description"
           content="Stay zen Stay focused with White Noise"
