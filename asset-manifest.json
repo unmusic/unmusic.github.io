@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.e7b01127.css",
+    "main.css": "/static/css/main.31badc80.css",
     "main.js": "/static/js/main.68e553e3.js",
     "static/media/unmusic-logo.svg": "/static/media/unmusic-logo.4167a80c9a76fefc5461a041831005be.svg",
     "index.html": "/index.html",
@@ -8,11 +8,11 @@
     "static/media/pause.svg": "/static/media/pause.adf29ed4dbef48364d3bce5241dce5ca.svg",
     "static/media/play-next.svg": "/static/media/play-next.e0792decb0fda2a7dc7e56d045c0f841.svg",
     "static/media/play.svg": "/static/media/play.38880997e9b1fec46b84257d72668cbf.svg",
-    "main.e7b01127.css.map": "/static/css/main.e7b01127.css.map",
+    "main.31badc80.css.map": "/static/css/main.31badc80.css.map",
     "main.68e553e3.js.map": "/static/js/main.68e553e3.js.map"
   },
   "entrypoints": [
-    "static/css/main.e7b01127.css",
+    "static/css/main.31badc80.css",
     "static/js/main.68e553e3.js"
   ]
 }
