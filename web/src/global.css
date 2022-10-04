@@ -52,10 +52,14 @@ header .logo img {
 
 main {
   margin-top: 48px;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 48px);
   /* min-height: -webkit-fill-available; */
   background-color: #f7f7f7;
   overflow-y: auto;
+}
+
+main.player-open {
+  height: calc(100vh - 150px);
 }
 
 footer {

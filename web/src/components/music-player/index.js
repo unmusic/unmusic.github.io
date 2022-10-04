@@ -32,9 +32,10 @@ const printTime = (time) => {
 const MusicPlayer = () => {
   const dispatch = useContext(PlayerDispatchContext);
   const { currentTrack, tracks } = useContext(PlayerStateContext);
+  console.log("currentTrack", currentTrack);
+  const trackIndex = currentTrack?.trackIndex;
 
   // State
-  const [trackIndex, setTrackIndex] = useState(0);
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -82,20 +83,26 @@ const MusicPlayer = () => {
   };
 
   const toPrevTrack = () => {
+    let index = 0;
     if (trackIndex - 1 < 0) {
-      setTrackIndex(tracks.length - 1);
+      index = tracks.length - 1;
     } else {
-      setTrackIndex(trackIndex - 1);
+      index = trackIndex - 1;
     }
+    const currentTrack = tracks[index];
+    currentTrack.trackIndex = index;
+    setCurrentTrack(dispatch, currentTrack);
     logEvent(AMPLITUDE_EVENTS.PLAYER_PREVIOUS_CLICK);
   };
 
   const toNextTrack = () => {
+    let index = 0;
     if (trackIndex < tracks.length - 1) {
-      setTrackIndex(trackIndex + 1);
-    } else {
-      setTrackIndex(0);
+      index = trackIndex + 1;
     }
+    const currentTrack = tracks[index];
+    currentTrack.trackIndex = index;
+    setCurrentTrack(dispatch, currentTrack);
     logEvent(AMPLITUDE_EVENTS.PLAYER_NEXT_CLICK);
   };
 

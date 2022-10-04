@@ -32,14 +32,21 @@ const PlayList = () => {
       fileUrl: fields?.trackURL,
     }));
     const playNow = [...allTracks];
-    setTracks(dispatch, playNow);
+    setTracks(dispatch, playNow, 0, true);
     logEvent(AMPLITUDE_EVENTS.PLAYLIST_PLAY_CLICK, {
       playlistId,
       playlistName: data?.fields?.name,
     });
   };
 
-  const handleTrackPlay = (trackId, trackName) => {
+  const handleTrackPlay = (trackId, trackName, trackIndex, isPlaying) => {
+    const allTracks = data?.fields?.tracks?.map(({ fields, sys }) => ({
+      id: sys.id,
+      name: fields?.title,
+      fileUrl: fields?.trackURL,
+    }));
+    const playNow = [...allTracks];
+    setTracks(dispatch, playNow, trackIndex, isPlaying);
     logEvent(AMPLITUDE_EVENTS.PLAYLIST_TRACK_PLAY_CLICK, {
       trackId,
       trackName,
@@ -69,7 +76,7 @@ const PlayList = () => {
             </button>
           </div>
           <ul>
-            {data?.fields?.tracks?.map(({ fields, sys }) => {
+            {data?.fields?.tracks?.map(({ fields, sys }, trackIndex) => {
               const isCurrentlyPlaying =
                 currentTrack?.id === sys?.id && currentTrack?.isPlaying;
               return (
@@ -82,7 +89,14 @@ const PlayList = () => {
                   <div className="action">
                     <button
                       className="button"
-                      onClick={() => handleTrackPlay(sys?.id, fields?.title)}
+                      onClick={() =>
+                        handleTrackPlay(
+                          sys?.id,
+                          fields?.title,
+                          trackIndex,
+                          !isCurrentlyPlaying
+                        )
+                      }
                     >
                       <img
                         src={isCurrentlyPlaying ? PauseIcon : PlayIcon}

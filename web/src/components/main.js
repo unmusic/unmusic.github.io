@@ -1,9 +1,12 @@
-import PlayList from "./playlist";
+import { useContext, cloneElement } from "react";
+import { PlayerStateContext } from "../contexts/Player";
 
-const Main = () => {
+const Main = ({ children, ...allOtherProps }) => {
+  const { showPlayer } = useContext(PlayerStateContext);
+  const mainClassName = showPlayer ? "main player-open" : "main";
   return (
-    <main className="main">
-      <PlayList />
+    <main className={mainClassName}>
+      {cloneElement(children, { ...allOtherProps })}
     </main>
   );
 };

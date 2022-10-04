@@ -20,11 +20,12 @@ const reducer = (state, action) => {
     case ACTION_TYPES.SET_TRACKS:
       return {
         ...state,
-        tracks: [...state.tracks, ...action.payload.tracks],
+        tracks: [...action.payload.tracks],
         showPlayer: true,
         currentTrack: {
-          ...action.payload.tracks?.[0],
-          isPlaying: true,
+          ...action.payload.tracks?.[action.payload.currentTrackIndex],
+          isPlaying: action.payload.isPlaying,
+          trackIndex: action.payload.currentTrackIndex,
         },
       };
     case ACTION_TYPES.SET_CURRENT_TRACK:
@@ -63,10 +64,15 @@ export const toggleShowPlayer = (dispatch, showPlayer) => {
   });
 };
 
-export const setTracks = (dispatch, tracks) => {
+export const setTracks = (
+  dispatch,
+  tracks,
+  currentTrackIndex = 0,
+  isPlaying
+) => {
   return dispatch({
     type: ACTION_TYPES.SET_TRACKS,
-    payload: { tracks },
+    payload: { tracks, currentTrackIndex, isPlaying },
   });
 };
 
