@@ -16,7 +16,7 @@ import "./index.css";
 
 const PlayList = () => {
   const { playlistId } = useParams();
-  const { currentTrack } = useContext(PlayerStateContext);
+  const { currentTrack, tracks } = useContext(PlayerStateContext);
   const dispatch = useContext(PlayerDispatchContext);
 
   const { isLoading, error, data } = useQuery([playlistId], () =>
@@ -110,6 +110,7 @@ const PlayList = () => {
           </ul>
         </>
       )}
+      <pre>{JSON.stringify({ currentTrack, tracks }, null, 2)}</pre>
     </div>
   );
 };

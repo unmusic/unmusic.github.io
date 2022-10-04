@@ -91,6 +91,9 @@ const MusicPlayer = () => {
     }
     const currentTrack = tracks[index];
     currentTrack.trackIndex = index;
+
+    console.log("currentTrack", currentTrack, tracks);
+
     setCurrentTrack(dispatch, currentTrack);
     logEvent(AMPLITUDE_EVENTS.PLAYER_PREVIOUS_CLICK);
   };

@@ -3,7 +3,11 @@ import React, { useReducer, createContext } from "react";
 const initialState = {
   tracks: [],
   showPlayer: false,
-  currentTrack: null,
+  currentTrack: {
+    isPlaying: false,
+    trackIndex: 0,
+    id: null,
+  },
 };
 
 const ACTION_TYPES = {
@@ -32,6 +36,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         currentTrack: {
+          ...state.currentTrack,
           ...action.payload.track,
           isPlaying: true,
         },
