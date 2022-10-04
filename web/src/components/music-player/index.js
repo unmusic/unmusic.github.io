@@ -185,6 +185,8 @@ const MusicPlayer = () => {
     };
   }, [handleUserKeyPress]);
 
+  console.log("trackIndex", trackIndex);
+
   return (
     <div className="music-player-container">
       <div className="music-player">
