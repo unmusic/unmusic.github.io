@@ -13,6 +13,7 @@ import AMPLITUDE_EVENTS from "../../constants/amplitude-events";
 import contentfulClient from "../../utils/contentful";
 import PlayIcon from "../../assets/images/play.svg";
 import PauseIcon from "../../assets/images/pause.svg";
+import EqualizerAnimation from "../../assets/images/sound-wave.gif";
 import "./index.css";
 
 const PlayList = () => {
@@ -90,10 +91,19 @@ const PlayList = () => {
                 currentTrack?.id === sys?.id && currentTrack?.isPlaying;
               return (
                 <li key={sys?.id}>
-                  <img
-                    className="album-art"
-                    src={fields?.albumArt?.fields?.file?.url}
-                  />
+                  <div className="track-thumb">
+                    <img
+                      className="album-art"
+                      src={fields?.albumArt?.fields?.file?.url}
+                    />
+                    {isCurrentlyPlaying && (
+                      <img
+                        className="equalizer"
+                        src={EqualizerAnimation}
+                        alt="Equalizer"
+                      />
+                    )}
+                  </div>
                   <h4 className="track-name">{fields?.title}</h4>
                   <div className="action">
                     <button

@@ -52,11 +52,27 @@
   align-items: center;
 }
 
-.album-art{
+.track-thumb {
   width: 64px;
   height: 64px;
   flex-shrink: 0;
   border-radius: 8px;
+  position: relative;
+}
+
+.album-art{
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+}
+
+.equalizer {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  opacity: 0.65;
+  position: absolute;
+  left: 0;
 }
 
 .track-name {
