@@ -4,12 +4,14 @@ import React, {
   useRef,
   useContext,
   useCallback,
+  useMemo,
 } from "react";
 import { logEvent } from "@amplitude/analytics-browser";
 import {
   PlayerStateContext,
   PlayerDispatchContext,
   setCurrentTrack,
+  setPlaying,
 } from "../../contexts/Player";
 import { printTime } from "../../utils/player";
 import AMPLITUDE_EVENTS from "../../constants/amplitude-events";
@@ -22,15 +24,16 @@ import "./index.css";
 const MusicPlayer = () => {
   const dispatch = useContext(PlayerDispatchContext);
   const { currentTrack, tracks } = useContext(PlayerStateContext);
-  console.log("currentTrack", currentTrack);
-  const trackIndex = currentTrack?.trackIndex;
 
   // State
   const [trackProgress, setTrackProgress] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   // Destructure for conciseness
-  const { fileUrl } = tracks?.[trackIndex] || {};
+  // const { fileUrl } = tracks?.[trackIndex] || {};
+  const { trackIndex, isPlaying, fileUrl } = currentTrack;
+  // const fileUrl = useMemo(() => {
+  //   return tracks?.[trackIndex]?.fileUrl;
+  // }, [trackIndex, tracks]);
 
   // Refs
   const audioRef = useRef(new Audio(fileUrl));
@@ -38,7 +41,6 @@ const MusicPlayer = () => {
   const isReady = useRef();
 
   // Destructure for conciseness
-  const { isPlaying: isCurrentlyPlaying } = currentTrack || {};
   const { duration } = audioRef.current;
   const start = printTime(trackProgress);
   const end = printTime(duration);
@@ -66,7 +68,7 @@ const MusicPlayer = () => {
   const onScrubEnd = () => {
     // If not already playing, start
     if (!isPlaying) {
-      setIsPlaying(true);
+      setPlaying(dispatch, true);
     }
     startTimer();
     logEvent(AMPLITUDE_EVENTS.PLAYER_SLIDER_CHANGE);
@@ -111,43 +113,40 @@ const MusicPlayer = () => {
   }, [isPlaying]);
 
   // Handles cleanup and setup when changing tracks
-  useEffect(() => {
-    audioRef.current.pause();
-    setIsPlaying(false);
-    audioRef.current = new Audio(fileUrl);
-    setTrackProgress(audioRef.current.currentTime);
-    const currentTrack = tracks[trackIndex];
-    setCurrentTrack(dispatch, currentTrack);
-    // if (isPlaying) {
-    //   setIsPlaying(true);
-    //   startTimer();
-    // }
+  // useEffect(() => {
+  //   audioRef.current.pause();
+  //   setPlaying(dispatch, false);
+  //   audioRef.current = new Audio(fileUrl);
+  //   setTrackProgress(audioRef.current.currentTime);
+  //   const currentTrack = tracks[trackIndex];
+  //   setCurrentTrack(dispatch, currentTrack);
+  //   // if (isPlaying) {
+  //   //   setIsPlaying(true);
+  //   //   startTimer();
+  //   // }
 
-    // if (isReady.current) {
-    //   audioRef.current.play();
-    //   console.log("START");
-    //   setIsPlaying(true);
-    //   console.log("END");
-    //   startTimer();
-    // } else {
-    //   // Set the isReady ref as true for the next pass
-    //   isReady.current = true;
-    // }
-  }, [trackIndex]);
+  //   // if (isReady.current) {
+  //   //   audioRef.current.play();
+  //   //   console.log("START");
+  //   //   setIsPlaying(true);
+  //   //   console.log("END");
+  //   //   startTimer();
+  //   // } else {
+  //   //   // Set the isReady ref as true for the next pass
+  //   //   isReady.current = true;
+  //   // }
+  // }, [trackIndex]);
 
   useEffect(() => {
     if (fileUrl) {
       audioRef.current.pause();
+      setPlaying(dispatch, false);
       audioRef.current = new Audio(fileUrl);
       setTrackProgress(audioRef.current.currentTime);
       audioRef.current.play();
-      setIsPlaying(true);
+      setPlaying(dispatch, true);
     }
   }, [fileUrl]);
-
-  useEffect(() => {
-    setIsPlaying(isCurrentlyPlaying);
-  }, [isCurrentlyPlaying]);
 
   useEffect(() => {
     // Pause and clean up on unmount
@@ -162,9 +161,9 @@ const MusicPlayer = () => {
       const { keyCode } = event;
       if (keyCode === 32) {
         if (isPlaying) {
-          setIsPlaying(false);
+          setPlaying(dispatch, false);
         } else {
-          setIsPlaying(true);
+          setPlaying(dispatch, true);
         }
       }
     },
@@ -178,7 +177,7 @@ const MusicPlayer = () => {
     };
   }, [handleUserKeyPress]);
 
-  console.log("trackIndex", trackIndex);
+  console.log("fileURL", fileUrl);
 
   return (
     <div className="music-player-container">
@@ -214,9 +213,7 @@ const MusicPlayer = () => {
               <button
                 className="control-current"
                 onClick={() => {
-                  setIsPlaying(false);
-                  const trackInfo = { ...currentTrack, isPlaying: false };
-                  setCurrentTrack(dispatch, trackInfo);
+                  setPlaying(dispatch, false);
                   logEvent(AMPLITUDE_EVENTS.PLAYER_PLAY_CLICK, {
                     isPlaying: false,
                   });
@@ -228,9 +225,7 @@ const MusicPlayer = () => {
               <button
                 className="control-current"
                 onClick={() => {
-                  setIsPlaying(true);
-                  const trackInfo = { ...currentTrack, isPlaying: true };
-                  setCurrentTrack(dispatch, trackInfo);
+                  setPlaying(dispatch, true);
                   logEvent(AMPLITUDE_EVENTS.PLAYER_PLAY_CLICK, {
                     isPlaying: true,
                   });

@@ -7,6 +7,7 @@ import {
   setTracks,
   PlayerDispatchContext,
   PlayerStateContext,
+  setPlaying,
 } from "../../contexts/Player";
 import AMPLITUDE_EVENTS from "../../constants/amplitude-events";
 import contentfulClient from "../../utils/contentful";
@@ -26,17 +27,22 @@ const PlayList = () => {
   );
 
   const handlePlaylist = () => {
-    const allTracks = data?.fields?.tracks?.map(({ fields, sys }) => ({
-      id: sys.id,
-      name: fields?.title,
-      fileUrl: fields?.trackURL,
-    }));
-    const playNow = [...allTracks];
-    setTracks(dispatch, playNow, 0, true);
-    logEvent(AMPLITUDE_EVENTS.PLAYLIST_PLAY_CLICK, {
-      playlistId,
-      playlistName: data?.fields?.name,
-    });
+    const { isPlaying } = currentTrack;
+    if (isPlaying) {
+      setPlaying(dispatch, false);
+    } else {
+      const allTracks = data?.fields?.tracks?.map(({ fields, sys }) => ({
+        id: sys.id,
+        name: fields?.title,
+        fileUrl: fields?.trackURL,
+      }));
+      const playNow = [...allTracks];
+      setTracks(dispatch, playNow, 0, true);
+      logEvent(AMPLITUDE_EVENTS.PLAYLIST_PLAY_CLICK, {
+        playlistId,
+        playlistName: data?.fields?.name,
+      });
+    }
   };
 
   const handleTrackPlay = (trackId, trackName, trackIndex, isPlaying) => {
@@ -72,7 +78,10 @@ const PlayList = () => {
           <div className="playlist-header">
             <h1>{data?.fields?.name}</h1>
             <button className="button" onClick={handlePlaylist}>
-              <img src={PlayIcon} alt="Play" />
+              <img
+                src={currentTrack?.isPlaying ? PauseIcon : PlayIcon}
+                alt="Play"
+              />
             </button>
           </div>
           <ul>
@@ -110,7 +119,7 @@ const PlayList = () => {
           </ul>
         </>
       )}
-      <pre>{JSON.stringify({ currentTrack, tracks }, null, 2)}</pre>
+      {/* <pre>{JSON.stringify({ currentTrack, tracks }, null, 2)}</pre> */}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import MusicPlayer from "./music-player/index";
+import MusicPlayer from "./music-player/indexV2";
 import { PlayerStateContext } from "../contexts/Player";
 
 const Footer = () => {
