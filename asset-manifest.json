@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.2fad6b34.css",
-    "main.js": "/static/js/main.018c41ab.js",
+    "main.css": "/static/css/main.b470b24d.css",
+    "main.js": "/static/js/main.3524bc05.js",
+    "static/media/sound-wave.gif": "/static/media/sound-wave.84607574b5d3c73ddcc4.gif",
     "static/media/unmusic-logo.svg": "/static/media/unmusic-logo.4167a80c9a76fefc5461a041831005be.svg",
     "index.html": "/index.html",
     "static/media/play-prev.svg": "/static/media/play-prev.b925e9a1c221047ef99dde1be0b094dd.svg",
     "static/media/pause.svg": "/static/media/pause.adf29ed4dbef48364d3bce5241dce5ca.svg",
     "static/media/play-next.svg": "/static/media/play-next.e0792decb0fda2a7dc7e56d045c0f841.svg",
     "static/media/play.svg": "/static/media/play.38880997e9b1fec46b84257d72668cbf.svg",
-    "main.2fad6b34.css.map": "/static/css/main.2fad6b34.css.map",
-    "main.018c41ab.js.map": "/static/js/main.018c41ab.js.map"
+    "main.b470b24d.css.map": "/static/css/main.b470b24d.css.map",
+    "main.3524bc05.js.map": "/static/js/main.3524bc05.js.map"
   },
   "entrypoints": [
-    "static/css/main.2fad6b34.css",
-    "static/js/main.018c41ab.js"
+    "static/css/main.b470b24d.css",
+    "static/js/main.3524bc05.js"
   ]
 }
