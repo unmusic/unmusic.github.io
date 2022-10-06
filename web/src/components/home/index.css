@@ -49,3 +49,10 @@
     font-size: 24px;
   }
 }
+
+@media (max-width: 375px) {
+  .category-list li a h4 {
+    font-size: 20px;
+    left: 20px;
+  }
+}
