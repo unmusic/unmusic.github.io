@@ -1,15 +1,17 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import * as Amplitude from "@amplitude/analytics-browser";
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import Root from "./pages/root";
-import HomePage from "./pages/index";
-import ErrorPage from "./pages/error";
-import PlaylistPage from "./pages/playlist";
-import MusicPage from "./pages/music";
+import FlashScreen from "./components/flashscreen";
 import "./global.css";
+
+const HomePage = React.lazy(() => import("./pages/index"));
+const ErrorPage = React.lazy(() => import("./pages/error"));
+const PlaylistPage = React.lazy(() => import("./pages/playlist"));
+const MusicPage = React.lazy(() => import("./pages/music"));
 
 const router = createHashRouter([
   {
@@ -46,6 +48,8 @@ if (process.env.NODE_ENV === "production") {
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Suspense fallback={<FlashScreen />}>
+      <RouterProvider router={router} />
+    </Suspense>
   </React.StrictMode>
 );

@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import MusicPlayer from "./music-player/indexV2";
+import { useContext, lazy } from "react";
 import { PlayerStateContext } from "../contexts/Player";
+const MusicPlayer = lazy(() => import("./music-player/indexV2"));
 
 const Footer = () => {
   const { showPlayer } = useContext(PlayerStateContext);

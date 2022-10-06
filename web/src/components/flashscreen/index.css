@@ -1,0 +1,11 @@
+.flash-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 48px);
+}
+
+.flash-screen img {
+  width: 64px;
+  height: 64px;
+}
