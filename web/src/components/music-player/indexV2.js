@@ -27,19 +27,13 @@ import "./index.css";
 const MusicPlayer = () => {
   const dispatch = useContext(PlayerDispatchContext);
   const { currentTrack, tracks } = useContext(PlayerStateContext);
-
-  // State
-  const [trackProgress, setTrackProgress] = useState(0);
-
-  // Destructure for conciseness
   const { trackIndex, isPlaying, fileUrl, isLoading } = currentTrack;
+  const [trackProgress, setTrackProgress] = useState(0);
 
   // Refs
   const audioRef = useRef(new Audio(fileUrl));
-  const intervalRef = useRef();
-
-  // Destructure for conciseness
   const { duration } = audioRef.current;
+  const intervalRef = useRef();
 
   const start = useMemo(() => printTime(trackProgress), [trackProgress]);
   const end = useMemo(() => printTime(duration), [duration]);
@@ -75,6 +69,7 @@ const MusicPlayer = () => {
   };
 
   const toPrevTrack = () => {
+    setPlaying(dispatch, false);
     let index = 0;
     if (trackIndex - 1 < 0) {
       index = tracks.length - 1;
@@ -88,6 +83,7 @@ const MusicPlayer = () => {
   };
 
   const toNextTrack = () => {
+    setPlaying(dispatch, false);
     let index = 0;
     if (trackIndex < tracks.length - 1) {
       index = trackIndex + 1;
@@ -128,9 +124,20 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     if (fileUrl) {
+      // const playing =
+      //   audioRef.current.currentTime > 0 &&
+      //   !audioRef.current.paused &&
+      //   !audioRef.current.ended &&
+      //   audioRef.current.readyState > 2;
       setPlaying(dispatch, false);
+      // if (playing) {
+      audioRef?.current?.pause();
+      // }
       audioRef.current = new Audio(fileUrl);
       setPlaying(dispatch, true);
+      // if (!playing) {
+      audioRef?.current?.play();
+      // }
       startTimer();
     }
   }, [fileUrl]);
