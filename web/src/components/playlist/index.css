@@ -67,12 +67,11 @@
 }
 
 .equalizer {
-  width: 64px;
-  height: 64px;
-  border-radius: 8px;
-  opacity: 0.65;
+  width: 48px;
+  height: 48px;
   position: absolute;
-  left: 0;
+  left: 12px;
+  top: 8px;
 }
 
 .track-name {

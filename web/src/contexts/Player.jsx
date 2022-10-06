@@ -4,6 +4,7 @@ const initialState = {
   tracks: [],
   showPlayer: false,
   currentTrack: {
+    isLoading: false,
     isPlaying: false,
     trackIndex: 0,
     id: null,
@@ -15,6 +16,7 @@ const ACTION_TYPES = {
   TOGGLE_SHOW_PLAYER: "TOGGLE_SHOW_PLAYER",
   SET_CURRENT_TRACK: "SET_CURRENT_TRACK",
   SET_PLAYING: "SET_PLAYING",
+  SET_LOADING: "SET_LOADING",
 };
 
 export const PlayerStateContext = createContext();
@@ -48,6 +50,14 @@ const reducer = (state, action) => {
         currentTrack: {
           ...state.currentTrack,
           isPlaying: action.payload.isPlaying,
+        },
+      };
+    case ACTION_TYPES.SET_LOADING:
+      return {
+        ...state,
+        currentTrack: {
+          ...state.currentTrack,
+          isLoading: action.payload.isLoading,
         },
       };
     case ACTION_TYPES.TOGGLE_SHOW_PLAYER:
@@ -98,10 +108,16 @@ export const setCurrentTrack = (dispatch, track) => {
 };
 
 export const setPlaying = (dispatch, isPlaying) => {
-  console.log("setPlaying", isPlaying);
   return dispatch({
     type: ACTION_TYPES.SET_PLAYING,
     payload: { isPlaying },
+  });
+};
+
+export const setLoading = (dispatch, isLoading) => {
+  return dispatch({
+    type: ACTION_TYPES.SET_LOADING,
+    payload: { isLoading },
   });
 };
 

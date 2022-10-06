@@ -12,6 +12,7 @@ import {
   PlayerDispatchContext,
   setCurrentTrack,
   setPlaying,
+  setLoading,
 } from "../../contexts/Player";
 import { printTime } from "../../utils/player";
 import AMPLITUDE_EVENTS from "../../constants/amplitude-events";
@@ -19,6 +20,8 @@ import PlayIcon from "../../assets/images/play.svg";
 import PauseIcon from "../../assets/images/pause.svg";
 import NextIcon from "../../assets/images/play-next.svg";
 import PrevIcon from "../../assets/images/play-prev.svg";
+import AudioSpinner from "../../assets/images/audio-spinner.svg";
+import LoadingSpinner from "../../assets/images/loading-spinner.svg";
 import "./index.css";
 
 const MusicPlayer = () => {
@@ -29,21 +32,18 @@ const MusicPlayer = () => {
   const [trackProgress, setTrackProgress] = useState(0);
 
   // Destructure for conciseness
-  // const { fileUrl } = tracks?.[trackIndex] || {};
-  const { trackIndex, isPlaying, fileUrl } = currentTrack;
-  // const fileUrl = useMemo(() => {
-  //   return tracks?.[trackIndex]?.fileUrl;
-  // }, [trackIndex, tracks]);
+  const { trackIndex, isPlaying, fileUrl, isLoading } = currentTrack;
 
   // Refs
   const audioRef = useRef(new Audio(fileUrl));
   const intervalRef = useRef();
-  const isReady = useRef();
 
   // Destructure for conciseness
   const { duration } = audioRef.current;
-  const start = printTime(trackProgress);
-  const end = printTime(duration);
+
+  const start = useMemo(() => printTime(trackProgress), [trackProgress]);
+  const end = useMemo(() => printTime(duration), [duration]);
+  const isTrackLoading = audioRef.current.readyState <= 2;
 
   const startTimer = () => {
     // Clear any timers already running
@@ -83,9 +83,6 @@ const MusicPlayer = () => {
     }
     const currentTrack = tracks[index];
     currentTrack.trackIndex = index;
-
-    console.log("currentTrack", currentTrack, tracks);
-
     setCurrentTrack(dispatch, currentTrack);
     logEvent(AMPLITUDE_EVENTS.PLAYER_PREVIOUS_CLICK);
   };
@@ -101,52 +98,58 @@ const MusicPlayer = () => {
     logEvent(AMPLITUDE_EVENTS.PLAYER_NEXT_CLICK);
   };
 
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play();
-      // togglePlaying(dispatch, true);
-      startTimer();
-    } else {
-      audioRef.current.pause();
-      // togglePlaying(dispatch, false);
-    }
-  }, [isPlaying]);
+  const handlePlay = () => {
+    setPlaying(dispatch, true);
+    logEvent(AMPLITUDE_EVENTS.PLAYER_PLAY_CLICK, {
+      isPlaying: true,
+    });
+  };
 
-  // Handles cleanup and setup when changing tracks
-  // useEffect(() => {
-  //   audioRef.current.pause();
-  //   setPlaying(dispatch, false);
-  //   audioRef.current = new Audio(fileUrl);
-  //   setTrackProgress(audioRef.current.currentTime);
-  //   const currentTrack = tracks[trackIndex];
-  //   setCurrentTrack(dispatch, currentTrack);
-  //   // if (isPlaying) {
-  //   //   setIsPlaying(true);
-  //   //   startTimer();
-  //   // }
+  const handlePause = () => {
+    setPlaying(dispatch, false);
+    logEvent(AMPLITUDE_EVENTS.PLAYER_PLAY_CLICK, {
+      isPlaying: false,
+    });
+  };
 
-  //   // if (isReady.current) {
-  //   //   audioRef.current.play();
-  //   //   console.log("START");
-  //   //   setIsPlaying(true);
-  //   //   console.log("END");
-  //   //   startTimer();
-  //   // } else {
-  //   //   // Set the isReady ref as true for the next pass
-  //   //   isReady.current = true;
-  //   // }
-  // }, [trackIndex]);
+  const handleUserKeyPress = useCallback(
+    (event) => {
+      const { keyCode } = event;
+      if (keyCode === 32) {
+        if (isPlaying) {
+          handlePause();
+        } else {
+          handlePlay();
+        }
+      }
+    },
+    [isPlaying]
+  );
 
   useEffect(() => {
     if (fileUrl) {
-      audioRef.current.pause();
       setPlaying(dispatch, false);
       audioRef.current = new Audio(fileUrl);
-      setTrackProgress(audioRef.current.currentTime);
-      audioRef.current.play();
       setPlaying(dispatch, true);
+      startTimer();
     }
   }, [fileUrl]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef?.current?.play();
+    } else {
+      audioRef?.current?.pause();
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (isTrackLoading) {
+      setLoading(dispatch, true);
+    } else {
+      setLoading(dispatch, false);
+    }
+  }, [isTrackLoading]);
 
   useEffect(() => {
     // Pause and clean up on unmount
@@ -156,28 +159,12 @@ const MusicPlayer = () => {
     };
   }, []);
 
-  const handleUserKeyPress = useCallback(
-    (event) => {
-      const { keyCode } = event;
-      if (keyCode === 32) {
-        if (isPlaying) {
-          setPlaying(dispatch, false);
-        } else {
-          setPlaying(dispatch, true);
-        }
-      }
-    },
-    [isPlaying]
-  );
-
   useEffect(() => {
     window.addEventListener("keydown", handleUserKeyPress);
     return () => {
       window.removeEventListener("keydown", handleUserKeyPress);
     };
   }, [handleUserKeyPress]);
-
-  console.log("fileURL", fileUrl);
 
   return (
     <div className="music-player-container">
@@ -195,7 +182,6 @@ const MusicPlayer = () => {
                 onChange={(e) => onScrub(e.target.value)}
                 onMouseUp={onScrubEnd}
                 onKeyUp={onScrubEnd}
-                // style={{ background: trackStyling }}
               />
             </div>
             <div className="time-elapsed">
@@ -210,28 +196,12 @@ const MusicPlayer = () => {
               <img src={PrevIcon} alt="Previous" />
             </button>
             {isPlaying ? (
-              <button
-                className="control-current"
-                onClick={() => {
-                  setPlaying(dispatch, false);
-                  logEvent(AMPLITUDE_EVENTS.PLAYER_PLAY_CLICK, {
-                    isPlaying: false,
-                  });
-                }}
-              >
-                <img src={PauseIcon} alt="Pause" />
+              <button className="control-current" onClick={handlePause}>
+                <img src={isLoading ? LoadingSpinner : PauseIcon} alt="Pause" />
               </button>
             ) : (
-              <button
-                className="control-current"
-                onClick={() => {
-                  setPlaying(dispatch, true);
-                  logEvent(AMPLITUDE_EVENTS.PLAYER_PLAY_CLICK, {
-                    isPlaying: true,
-                  });
-                }}
-              >
-                <img src={PlayIcon} alt="Pause" />
+              <button className="control-current" onClick={handlePlay}>
+                <img src={isLoading ? LoadingSpinner : PlayIcon} alt="Pause" />
               </button>
             )}
             <button className="control-next" onClick={() => toNextTrack()}>

@@ -13,12 +13,13 @@ import AMPLITUDE_EVENTS from "../../constants/amplitude-events";
 import contentfulClient from "../../utils/contentful";
 import PlayIcon from "../../assets/images/play.svg";
 import PauseIcon from "../../assets/images/pause.svg";
-import EqualizerAnimation from "../../assets/images/sound-wave.gif";
+import AudioSpinner from "../../assets/images/audio-spinner.svg";
+import LoadingSpinner from "../../assets/images/loading-spinner.svg";
 import "./index.css";
 
 const PlayList = () => {
   const { playlistId } = useParams();
-  const { currentTrack, tracks } = useContext(PlayerStateContext);
+  const { currentTrack } = useContext(PlayerStateContext);
   const dispatch = useContext(PlayerDispatchContext);
 
   const { isLoading, error, data } = useQuery([playlistId], () =>
@@ -89,6 +90,8 @@ const PlayList = () => {
             {data?.fields?.tracks?.map(({ fields, sys }, trackIndex) => {
               const isCurrentlyPlaying =
                 currentTrack?.id === sys?.id && currentTrack?.isPlaying;
+              const isCurrentlyLoading =
+                currentTrack?.id === sys?.id && currentTrack?.isLoading;
               return (
                 <li key={sys?.id}>
                   <div className="track-thumb">
@@ -96,10 +99,17 @@ const PlayList = () => {
                       className="album-art"
                       src={fields?.albumArt?.fields?.file?.url}
                     />
-                    {isCurrentlyPlaying && (
+                    {isCurrentlyLoading && (
                       <img
                         className="equalizer"
-                        src={EqualizerAnimation}
+                        src={LoadingSpinner}
+                        alt="Equalizer"
+                      />
+                    )}
+                    {!isCurrentlyLoading && isCurrentlyPlaying && (
+                      <img
+                        className="equalizer"
+                        src={AudioSpinner}
                         alt="Equalizer"
                       />
                     )}
