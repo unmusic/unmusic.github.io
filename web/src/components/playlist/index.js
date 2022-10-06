@@ -15,6 +15,7 @@ import PlayIcon from "../../assets/images/play.svg";
 import PauseIcon from "../../assets/images/pause.svg";
 import AudioSpinner from "../../assets/images/audio-spinner.svg";
 import LoadingSpinner from "../../assets/images/loading-spinner.svg";
+import Loader from "../loader";
 import "./index.css";
 
 const PlayList = () => {
@@ -70,7 +71,7 @@ const PlayList = () => {
         </title>
         <meta name="description" content={data?.fields?.description} />
       </Helmet>
-      {isLoading && !data && <p>Loading, please wait...</p>}
+      {isLoading && !data && <Loader />}
       {!isLoading && error && <p>{error}</p>}
       {!isLoading && data && (
         <>

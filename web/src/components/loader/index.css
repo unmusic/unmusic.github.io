@@ -1,0 +1,16 @@
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 48px);
+}
+
+.loading-container.player-open {
+  height: calc(100vh - 150px);
+}
+
+.loading-container img {
+  height: 64px;
+  width: 64px;
+  opacity: 0.25;
+}
