@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkweb=self.webpackChunkweb||[]).push([[937],{6937:function(e,r,s){s.r(r);var n=s(7689),c=s(184);r.default=function(){var e=(0,n.lk)();return console.error(e),(0,c.jsxs)("div",{id:"error-page",children:[(0,c.jsx)("h1",{children:"Oops!"}),(0,c.jsx)("p",{children:"Sorry, an unexpected error has occurred."}),(0,c.jsx)("p",{children:(0,c.jsx)("i",{children:e.statusText||e.message})})]})}}}]);
+//# sourceMappingURL=937.ca0972f4.chunk.js.map

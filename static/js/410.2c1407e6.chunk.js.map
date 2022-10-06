@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/410.2c1407e6.chunk.js","mappings":"mHAQA,UARkB,WAChB,OACE,gBAAKA,GAAG,aAAR,UACE,+CAGL,C","sources":["pages/music.js"],"sourcesContent":["const MusicPage = () => {\n  return (\n    <div id=\"music-page\">\n      <h1>Music Detail Page</h1>\n    </div>\n  );\n};\n\nexport default MusicPage;\n"],"names":["id"],"sourceRoot":""}
