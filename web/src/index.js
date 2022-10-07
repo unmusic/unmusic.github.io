@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode, Suspense, lazy } from "react";
+import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import * as Amplitude from "@amplitude/analytics-browser";
@@ -8,10 +8,10 @@ import Root from "./pages/root";
 import FlashScreen from "./components/flashscreen";
 import "./global.css";
 
-const HomePage = React.lazy(() => import("./pages/index"));
-const ErrorPage = React.lazy(() => import("./pages/error"));
-const PlaylistPage = React.lazy(() => import("./pages/playlist"));
-const MusicPage = React.lazy(() => import("./pages/music"));
+const HomePage = lazy(() => import("./pages/index"));
+const ErrorPage = lazy(() => import("./pages/error"));
+const PlaylistPage = lazy(() => import("./pages/playlist"));
+const MusicPage = lazy(() => import("./pages/music"));
 
 const router = createHashRouter([
   {
@@ -35,7 +35,7 @@ const router = createHashRouter([
   },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
@@ -47,9 +47,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <Suspense fallback={<FlashScreen />}>
       <RouterProvider router={router} />
     </Suspense>
-  </React.StrictMode>
+  </StrictMode>
 );
