@@ -24,10 +24,15 @@ Sign up for the following services and grab the API keys:
 ### Contentful Model Creation
 
 - Create two models in the Contentful dashboard named `Playlist` and `Track`.
+
   ![](documentation/unmusic-contentful-models.png)
+  
 - `Playlist` model for saving the list of tracks, which will contain the following fields:
+
   ![Playlist Model](documentation/umusic-playlist-model.png)
+  
 - `Track` model for saving the track information, which will contain the following fields:
+
   ![Track Model](documentation/unmusic-track-model.png)
 
 <p>
@@ -38,8 +43,11 @@ Sign up for the following services and grab the API keys:
 ### Cloudinary Assets Hosting
 
 - Login into your Cloudinary account and create folder and upload all of your MP3 files
+
   ![Cloudinary Folder Creation](documentation/unmusic-cloudinary-folder.png)
+  
 - Copy the public URL for each file by clicking on the `Copy URL` button
+
   ![Cloudinary Copy Public URL](documentation/unmusic-copy-cloudinary-url.png)
 
 <p>
