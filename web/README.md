@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+![UnMusic](web/src/assets/images/unmusic-logo.svg)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Productivity music for Developers
 
-## Available Scripts
+<p>
+&nbsp;
+&nbsp;
+</p>
 
-In the project directory, you can run:
+### Prerequisite
 
-### `npm start`
+Sign up for the following services and grab the API keys:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [Contentful](https://www.contentful.com) - CMS for managing the contents of the app (20000 Records & 2,000,000 API Calls/month in free tier)
+- [Cloudinary](https://cloudinary.com/invites/lpov9zyyucivvxsnalc5/ccvdwhixsfyxtjdy3kcs?t=default) - Content Delivery service for hosting audio files for streaming (25 GB/month in free tier)
+- [Amplitude](https://www.amplitude.com) - App usage analytics (Optional)
+- [Sentry](https://sentry.io) - Error monitoring in production (Optional)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<p>
+&nbsp;
+&nbsp;
+</p>
 
-### `npm test`
+### Contentful Model Creation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Create two models in the Contentful dashboard named `Playlist` and `Track`.
 
-### `npm run build`
+  ![](documentation/unmusic-contentful-models.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `Playlist` model for saving the list of tracks, which will contain the following fields:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  ![Playlist Model](documentation/umusic-playlist-model.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `Track` model for saving the track information, which will contain the following fields:
 
-### `npm run eject`
+  ![Track Model](documentation/unmusic-track-model.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<p>
+&nbsp;
+&nbsp;
+</p>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Cloudinary Assets Hosting
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Login into your Cloudinary account and create folder and upload all of your MP3 files
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  ![Cloudinary Folder Creation](documentation/unmusic-cloudinary-folder.png)
 
-## Learn More
+- Copy the public URL for each file by clicking on the `Copy URL` button
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  ![Cloudinary Copy Public URL](documentation/unmusic-copy-cloudinary-url.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<p>
+&nbsp;
+&nbsp;
+</p>
 
-### Code Splitting
+### Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Clone the repository by running `git clone git@github.com:unmusic/unmusic.github.io.git`
+- Get inside the `/web` folder
+- Add a file named `.env.local` and replace it with contents of `.env.sample`
+- Make sure you update all the environment variables below:
 
-### Analyzing the Bundle Size
+  - `REACT_APP_CONTENTFUL_SPACE_ID`
+  - `REACT_APP_CONTENTFUL_ACCESS_TOKEN`
+  - `REACT_APP_AMPLITUDE_API_KEY` (Optional)
+  - `REACT_APP_SENTRY_DSN` (Optional)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Install all the dependencies by running `npm install`
+- Run `npm start` to start the application in the development mode. The app will be running at [http://localhost:3000](http://localhost:3000).
