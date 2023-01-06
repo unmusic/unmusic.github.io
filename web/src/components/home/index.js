@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { logEvent } from "@amplitude/analytics-browser";
 import contentfulClient from "../../utils/contentful";
 import AMPLITUDE_EVENTS from "../../constants/amplitude-events";
+import LaunchBanner from "../launch-banner";
 import Loader from "../loader";
 import "./index.css";
 
@@ -32,6 +33,7 @@ const Home = () => {
           content="Stay zen Stay focused with White Noise"
         />
       </Helmet>
+      <LaunchBanner />
       {isLoading && !data && <Loader />}
       {!isLoading && error && <p>{error}</p>}
       {!isLoading && data && (

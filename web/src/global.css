@@ -50,7 +50,11 @@ header .logo {
   margin: 8px 0;
 }
 header .logo img {
-  height: 28px
+  height: 28px;
+}
+
+header .link img {
+  vertical-align: middle;
 }
 
 main {
@@ -70,4 +74,22 @@ footer {
   bottom: 0;
   width: 100%;
   height: 102px;
+}
+
+.launch-banner {
+  margin: 24px 24px 0 16px;
+  background: #f3e6bd;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.launch-banner a {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #ff9800;
+  color: #222;
+  border-radius: 4px;
 }

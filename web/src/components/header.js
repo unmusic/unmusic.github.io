@@ -11,20 +11,12 @@ const Header = () => {
       <Link className="logo" to="/" onClick={() => handleClick()}>
         <img src={ImgUnMusicLogo} alt="UnMusic" />
       </Link>
-
       <p>
-        <span>Try now on </span>
-        <a
-          href="https://unmusic.app"
-          title="Try it now on our official website"
-        >
-          www.unmusic.app
-        </a>
-        <span>&nbsp;</span>
         <a
           href="https://github.com/unmusic/unmusic.github.io"
           target="_blank"
           title="Fork it on Github"
+          className="link"
         >
           <img src="/media-assets/github.svg" alt="Fork it on Github" />
         </a>
